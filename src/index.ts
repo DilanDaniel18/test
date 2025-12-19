@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+
 import clientRoutes from './routes/client.routes.js';
 import voucherRoutes from './routes/voucher.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
@@ -12,14 +13,13 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use('/api/clients', clientRoutes);
-app.use('/api/clients', clientRoutes);
 app.use('/api/vouchers', voucherRoutes);
 app.use('/api/payments', paymentRoutes);
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'API Funcionando', date: new Date() });
+  res.json({ status: 'API Online', timestamp: new Date() });
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor en http://localhost:${PORT}`);
+  console.log(`http://localhost:${PORT}`);
 });
