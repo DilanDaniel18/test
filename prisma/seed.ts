@@ -8,7 +8,7 @@ async function main() {
 
   await prisma.client.create({
     data: {
-      name: "Cliente A",
+      name: "Dilan",
       commissions: {
         create: [
           { minDays: 0, maxDays: 7, percentage: 25 },
@@ -23,7 +23,7 @@ async function main() {
 
   await prisma.client.create({
     data: {
-      name: "Cliente B",
+      name: "Yair",
       commissions: {
         create: [
           { minDays: 0, maxDays: 10, percentage: 20 },
@@ -35,7 +35,7 @@ async function main() {
     }
   });
 
-  console.log("Clientes A y B configurados correctamente.");
+  console.log("Clientes 1 y 2 configurados correctamente.");
 }
 
 main()
