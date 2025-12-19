@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Client {
+  id            Int               @id @default(autoincrement())
+  name          String
+  creditBalance Float             @default(0) // Para pagos excedentes [cite: 67]
+  commissions   CommissionRange[] // Configuración personalizada [cite: 15, 33]
+  vouchers      Voucher[]
+}
+
+model CommissionRange {
+  id         Int    @id @default(autoincrement())
+  minDays    Int    // Inicio del rango (ej. 0) [cite: 36]
+  maxDays    Int?   // Fin del rango (ej. 7, null para "o más") [cite: 36]
+  percentage Float  // % de comisión [cite: 36]
+  clientId   Int
+  client     Client @relation(fields: [clientId], references: [id])
+}
+
+model Voucher {
+  id          Int       @id @default(autoincrement())
+  totalAmount Float     // Monto total [cite: 45]
+  balance     Float     // Saldo pendiente [cite: 46]
+  createdAt   DateTime  @default(now()) // Fecha creación [cite: 47]
+  paymentDate DateTime  // Fecha pago (creacion + 15 días) [cite: 50, 51]
+  status      String    @default("ACTIVO") // ACTIVO o PAGADO [cite: 49]
+  clientId    Int
+  client      Client    @relation(fields: [clientId], references: [id])
+  payments    Payment[]
+}
+
+model Payment {
+  id        Int      @id @default(autoincrement())
+  amount    Float    // Monto del pago [cite: 54]
+  createdAt DateTime @default(now())
+  voucherId Int
+  voucher   Voucher  @relation(fields: [voucherId], references: [id])
+}
